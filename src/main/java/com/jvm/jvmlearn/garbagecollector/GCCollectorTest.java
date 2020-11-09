@@ -43,6 +43,34 @@ package com.jvm.jvmlearn.garbagecollector;
  *    范围(0,100) 默认99,即垃圾回收时间不超过1%
  * 6. -XX:+UseAdaptiveSizePolicy 设置Parallel Scavenge收集器具有自适应调节策略
  * 六。CMS回收器:低延迟
+ *  1. 第一款并行(执行线程和回收线程同时运行)
+ *  2. 无法与Parallel Scavenge 配合使用,新生代只能与ParNew 与 Serial 一起使用
+ *  3. 原理(标记清除)
+ *    - 初始标记 STW
+ *      - 仅仅是标记处GC Roots能直接关联到的对象
+ *    - 并发标记
+ *      - 从GC Roots直接关联对象开始遍历整个对象图的过程,不需要STW
+ *    - 重新标记(Remark) STW
+ *      - 修正并发标记期间,用户程序继续运行而导致标记产生标记的那一部分对象的标记记录 STW
+ *    - 并发清理(Concurrent - Sweep)
+ *      - 清理删除标记阶段判断的已经死亡的对象,释放内存空间
+ *    - 重置线程
+ *  4. 由于最耗时的并发标记和并发清除都不需要暂停工作,所以整体的回收是低停顿的
+ *  5. 当堆内存使用率达到某一阈值时,便开始进行回收(回收的时候用户线程需要有足够的内存可用)
+ *  6. 弊端
+ *    - 会产生内存碎片
+ *    - 对CPU资源非常敏感,导致吞吐量下降
+ *      -XX:ParallelCMSThreads 设置CMS的线程数量,默认启动线程数是(ParallelGCThreads+3)/4
+ *          ParallelGCThreads是年轻代并行收集器的线程数
+ *      -XX:CMSFullGCsBeforeCompaction 设置执行多少次Full GC后对内存空间进行压缩整理
+ *    - 无法处理浮动垃圾(Concurrent Mode Failure)
+ *       在并发标记阶段如果产生新的垃圾对象,CMS将无法对这些垃圾对象进行标记
+ *  7. CMS收集器可以设置的参数(jdk8之后移除)
+ *    - -XX:+UseConcMarkSweepGC == ParNew(Young区)  + CMS(old区) + Serial Old
+ *    - -XX:CMSInitiatingOccupancyFraction 设置堆内存使用率的阈值
+ *    - -XX:+UseCMSCompactAtFullCollection 指定在执行完Full GC后对内存空间进行压缩整理
+ *    - -XX:CMSFullGCsBeforeCompaction 设置执行多少次Full GC后对内存空间进行压缩整理
+ *    - -XX:ParallelCMSThreads 设置CMS的线程数据
  * 七。G1回收器:区域化分代式
  * 八。垃圾回收器总结
  * 九。GC日志分析
