@@ -71,7 +71,22 @@ package com.jvm.jvmlearn.garbagecollector;
  *    - -XX:+UseCMSCompactAtFullCollection 指定在执行完Full GC后对内存空间进行压缩整理
  *    - -XX:CMSFullGCsBeforeCompaction 设置执行多少次Full GC后对内存空间进行压缩整理
  *    - -XX:ParallelCMSThreads 设置CMS的线程数据
- * 七。G1回收器:区域化分代式
+ * 七。G1回收器:区域化分代式 (Garbage First)
+ *    - -XX:+UseG1GC
+ *    - 特点
+ *     1. 并行与并发
+ *        - 并行性: 多个GC线程同时工作,有效利用多核计算能力,STW
+ *        - 并发性: G1拥有与应用程序交替执行的能力,部分工作可以和应用程序同时执行
+ *     2. 分代收集
+ *        - 堆空间分成若干区域region,同时兼顾年轻代和老年代
+ *     3. 空间整合
+ *        - region之间是复制算法,整体上是标记-压缩算法
+ *     4. 可预测的停顿时间模型(软实时 soft real-time)
+ *        - 优先列表,优先回收价值最大的Region
+ *    - 缺点
+ *     1. 内存占用和程序运行时的额外执行负载比CMS要高
+ *     2. 小内存应用上CMS大概率优于G1 -- 记忆集
+ *    - 参数设置
  * 八。垃圾回收器总结
  * 九。GC日志分析
  * 十。垃圾回收器的新发展
