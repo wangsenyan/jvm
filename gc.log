@@ -1,0 +1,17 @@
+[0.014s][info][gc,heap,coops] Heap address: 0x00000000fec00000, size: 20 MB, Compressed Oops mode: 32-bit
+[0.015s][info][gc           ] Using Serial
+[0.126s][info][gc,start     ] GC(0) Pause Young (Allocation Failure)
+[0.130s][info][gc,heap      ] GC(0) DefNew: 7069K(9216K)->1023K(9216K) Eden: 7069K(8192K)->0K(8192K) From: 0K(1024K)->1023K(1024K)
+[0.130s][info][gc,heap      ] GC(0) Tenured: 0K(10240K)->4812K(10240K)
+[0.130s][info][gc,metaspace ] GC(0) Metaspace: 643K(4864K)->643K(4864K) NonClass: 585K(4352K)->585K(4352K) Class: 58K(512K)->58K(512K)
+[0.131s][info][gc           ] GC(0) Pause Young (Allocation Failure) 6M->5M(19M) 4.468ms
+[0.131s][info][gc,cpu       ] GC(0) User=0.00s Sys=0.00s Real=0.00s
+[0.131s][info][gc,heap,exit ] Heap
+[0.136s][info][gc,heap,exit ]  def new generation   total 9216K, used 7490K [0x00000000fec00000, 0x00000000ff600000, 0x00000000ff600000)
+[0.136s][info][gc,heap,exit ]   eden space 8192K,  78% used [0x00000000fec00000, 0x00000000ff2508c8, 0x00000000ff400000)
+[0.136s][info][gc,heap,exit ]   from space 1024K,  99% used [0x00000000ff500000, 0x00000000ff5ffff8, 0x00000000ff600000)
+[0.136s][info][gc,heap,exit ]   to   space 1024K,   0% used [0x00000000ff400000, 0x00000000ff400000, 0x00000000ff500000)
+[0.136s][info][gc,heap,exit ]  tenured generation   total 10240K, used 4812K [0x00000000ff600000, 0x0000000100000000, 0x0000000100000000)
+[0.136s][info][gc,heap,exit ]    the space 10240K,  46% used [0x00000000ff600000, 0x00000000ffab3050, 0x00000000ffab3200, 0x0000000100000000)
+[0.136s][info][gc,heap,exit ]  Metaspace       used 665K, capacity 4531K, committed 4864K, reserved 1056768K
+[0.136s][info][gc,heap,exit ]   class space    used 60K, capacity 402K, committed 512K, reserved 1048576K

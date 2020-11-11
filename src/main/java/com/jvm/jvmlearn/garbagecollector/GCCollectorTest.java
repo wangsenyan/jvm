@@ -1,5 +1,9 @@
 package com.jvm.jvmlearn.garbagecollector;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 /**
  *
  * 修改jdk依赖
@@ -88,13 +92,49 @@ package com.jvm.jvmlearn.garbagecollector;
  *     2. 小内存应用上CMS大概率优于G1 -- 记忆集
  *    - 参数设置
  * 八。垃圾回收器总结
+ *  -
+ *   1. -XX:+PrintGC -verbose:gc
+ *   2. -XX:+PrintGCDetails
+ *   3: -XX:+PrintGCTimeStamps jdk8
+ *   4: -XX:+PrintGCDateStamps jdk8
+ *   5. -XX:+PrintHeapAtGC jdk8
+ *   6. -Xlog:gc:../logs/gc.log 日志文件的输出路径
+ *  - 【名称:GC前内存占用->GC后内存占用(该区域内存总大小)
  * 九。GC日志分析
+ *  - gcviewer
  * 十。垃圾回收器的新发展
  */
-public class GCCollectorTest {
-    public static void main(String[] args) {
-     while (true){
 
-     }
+// -verbose:gc -Xms20m -Xmx20m -Xmn10m -XX:+PrintGCDetails -XX:SurvivorRatio=8 -XX:+UseSerialGC
+public class GCCollectorTest {
+    private  byte[] buffer = new byte[1024 * 1024 * 20];
+    public static void main(String[] args) {
+        List<GCCollectorTest> l_gc = new ArrayList<GCCollectorTest>();
+         while (true){
+            l_gc.add(new GCCollectorTest());
+             try {
+                 Thread.sleep(1000);
+             } catch (InterruptedException e) {
+                 e.printStackTrace();
+             }
+         }
+    }
+}
+
+// -verbose:gc -Xms20m -Xmx20m -Xmn10m -XX:+PrintGCDetails -XX:SurvivorRatio=8 -XX:+UseSerialGC
+class GCLogTest1 {
+    private static final int _1MB=1024*1024;
+
+    /**
+     * jdk7 新生代4g 老年代6g
+     * jdk8 新生代6g 老年代4g
+     * @param args
+     */
+    public static void main(String[] args) {
+        byte[] allocation1,allocation2,allocation3,allocation4;
+        allocation1 = new byte[2*_1MB];
+        allocation2 = new byte[2*_1MB];
+        allocation3 = new byte[2*_1MB];
+        allocation4 = new byte[4*_1MB];
     }
 }
