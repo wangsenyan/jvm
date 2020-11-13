@@ -42,7 +42,7 @@ package com.jvm.jvmlearn.garbage;
  *       - 基本数据类型对应的class对象
  *       - 常驻的异常对象(NullPointerException,OutOfMemoryError)
  *       - 系统类加载器
- *      - 反应java虚拟机内部情况的JMXBean、JVMTI中注册的回调、本地代码缓存等
+ *      - 反映java虚拟机内部情况的JMXBean、JVMTI中注册的回调、本地代码缓存等
  *    - 注意
  *      - 除固定的GC Roots集合外《根据用户所选用的垃圾收集器以及当前回收的内存
  *        区域不同,还可以有其他对象“临时性”地加入,共同构成完整GC Roots集合。
