@@ -1,7 +1,5 @@
 package com.jvm.jvmlearn;
 
-import java.net.URL;
-
 public class ClassLoaderTest {
 
     public static void main(String[] args) {

@@ -1,6 +1,7 @@
 package com.jvm.jvmlearn.garbagecollector;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -88,9 +89,42 @@ import java.util.Random;
  *     4. 可预测的停顿时间模型(软实时 soft real-time)
  *        - 优先列表,优先回收价值最大的Region
  *    - 缺点
- *     1. 内存占用和程序运行时的额外执行负载比CMS要高
- *     2. 小内存应用上CMS大概率优于G1 -- 记忆集
- *    - 参数设置
+
+ *     1. -XX:+UseG1GC 手动指定使用G1收集器执行内存回收任务
+ *     2. -XX:G1HeapRegionSize 设置每个region的大小,值是2的幂,范围是1MB到32MB之间,
+ *        目标是根据最小的java堆划分出约2048个区域,默认是堆内存的1/2000
+ *     3. -XX:MaxGCPauseMillis 设置期望达到的最大GC停顿时间指标。默认200ms
+ *     4. -XX:ParallelGCThread 设置STW时线程数的值,最多为8
+ *     5. -XX:ConcGCThreads 设置并发标记的线程数.n=(ParallelGCThreads)/4
+ *     6. -XX:InitiatingHeapOccupancyPercent 设置除非并发GC周期的java堆占用率阈值，默认45
+ *    - 步骤（Young GC 、Mixed GC 、Full GC）
+ *     1. 开启G1垃圾收集器
+ *     2. 设置堆的最大内存
+ *     3. 设置最大停顿时间
+ *    - G1回收器的适用场景
+ *     1. 大内存、多处理器
+ *     2. 低GC延迟、大堆的应用程序
+ *     3. 替换JDk1.5中的CMS收集器
+ *       - 超过50%的java堆被活动数据占用
+ *       - 对象分配频率或年代提升频率变化很大
+ *       - GC停顿时间过长(长于0.5~1秒)
+ *     4. 采用应用线程承担后台运行的GC工作
+ *   - 分区Region
+ *    1. eden
+ *    2. survivor
+ *    3. old
+ *    4. Humongous 存储大对象 >=1.5个region
+ *       连续H存放,充当老年代
+ *   - 回收过程
+ *    1. 年轻代GC
+ *    2. 年轻代GC + 老年代并发标记过程
+ *    3. 混合回收
+ *    4. Full GC
+ *  - Remembered Set region之间的引用
+ *    1. 每个Region都有一个记忆集
+ *    2. WRITE BARRIER
+ *    3. CardTable
+ *    4. 在GC根节点的枚举范围加入Remembered Set,不用全局扫描
  * 八。垃圾回收器总结
  *  -
  *   1. -XX:+PrintGC -verbose:gc
@@ -103,6 +137,9 @@ import java.util.Random;
  * 九。GC日志分析
  *  - gcviewer
  * 十。垃圾回收器的新发展
+ *
+ *
+ *
  */
 
 // -verbose:gc -Xms20m -Xmx20m -Xmn10m -XX:+PrintGCDetails -XX:SurvivorRatio=8 -XX:+UseSerialGC
@@ -120,6 +157,7 @@ public class GCCollectorTest {
          }
     }
 }
+
 
 // -verbose:gc -Xms20m -Xmx20m -Xmn10m -XX:+PrintGCDetails -XX:SurvivorRatio=8 -XX:+UseSerialGC
 class GCLogTest1 {
