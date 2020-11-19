@@ -80,6 +80,26 @@ package com.jvm.jvmlearn.bytecode;
  *  - 在jclasslib一般信息中
  * 5. 类索引，父类索引，接口类索引
  * 6. 字段表集合
+ *  - field包括类级变量以及实例集变量,但是不包括方法内部、代码块内部声明的局部变量
+ *  - 指向常量池索引集合,它描述了每个字段的完整信息
+ *    - 字段的标识符
+ *    - 访问修饰符
+ *    - 类变量还是实例变量
+ *    - 是否常量等
+ *  - 不会列出从父类或者实现的接口继承而来的字段,但对内部类会有指向外部类实例的字段
+ *  - 字段是不能重载的,但是如果两个字段的描述符不一致,字段重名是合法的
+ *  - 结构
+ *    u2                access_flags        访问标志
+ *    u2                name_index          字段名索引
+ *    u2                descriptor_index    描述符索引
+ *    u2                attributes_count    属性计数器
+ *    attribute_info    attributes          属性集合
+ *  - 属性集合 针对常量
+ *    ConstantValue_attribute {
+ *        u2 attribute_name_index;
+ *        u4 attribute_length;b //恒为2
+ *        u2 constantvalue_inedex;
+ *    }
  * 7. 方法表集合
  * 8. 属性表集合
  */
