@@ -101,7 +101,12 @@ package com.jvm.jvmlearn.bytecode;
  *        u2 constantvalue_inedex;
  *    }
  * 7. 方法表集合
- * 8. 属性表集合
+ * 8. 属性表集合方法表集合之后的属性表集合,指的是class文件所携带的辅助信息
+ *    比如class文件的源文件的名称。以及任何带有RetentionPolicy.CLASS
+ *    或者 RetentionPolicy.RUNTIME的注解。这类信息通常被用于Java虚拟机
+ *    的验证和运行,以及java程序的测试
+ *
+ *  -
  */
 public class ByteCodeTest {
     public static void main(String[] args) {
