@@ -25,7 +25,7 @@ package com.jvm.jvmlearn.bytecode;
  * 10. arraylength ->数组类型的对象
  *
  * 11. 指令类型:
- *  - 加载与存储指令
+ *  - 加载与存储指令 操作数栈(operand stack) 与 局部变量表(local variable)
  *    - 将数据从栈帧的局部变量表和操作数栈之间来回传递
  *    - 局部变量压栈指令: xload xload_<n>  x为i,l,f,d,a,n为0到3 超过3, xload n
  *    - 常量入栈指令: bipush,sipush,ldc,ldc_w,ldc2_w,
@@ -34,6 +34,19 @@ package com.jvm.jvmlearn.bytecode;
  *    - 出栈装入局部变量表指令: xstore,xstort_<n> x为i,l,f,d,a,n为0到3
  *                          xastore x为i,lf,d,a,b,c,s
  *    - 扩充局部变量表的访问索引的指令 wide
+ *    - long 和 double 占两个槽位,8字节
+ *    - 局部变量表：this,参数,代码中局部变量
+ *    ```
+ *    public void foo(long l,float f){
+ *        {
+ *            int i=0;
+ *        }
+ *        {
+ *            String s="hello,world";
+ *        }
+ *    }
+ *    ```
+ *    对应为：this(1) l(2) f(1) i/s(1) i和s共用,因为局部代码块
  *  - 算术指令
  *  - 类型转换指令
  *  - 对象的创建于访问指令

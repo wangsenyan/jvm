@@ -1,5 +1,7 @@
 package com.jvm.jvmlearn.bytecode;
 
+import java.util.HashMap;
+
 /**
  * 非静态代码块放在init中
  * javac -g JavaPTest.java 会有LocalVariableTable信息
@@ -59,5 +61,14 @@ public class JavaPTest {
     public void showInfo(){
         int i=10;
         System.out.println(info +i);
+    }
+    // 操作数栈每次只放了一个,前一个被踢出去了
+    public void test(int num,Object obj,long count,boolean flag,short[] arr ){
+        System.out.println(num);
+        System.out.println(obj);
+        System.out.println(count);
+        System.out.println(flag);
+        System.out.println(arr);
+        HashMap<String,String> hs;
     }
 }
