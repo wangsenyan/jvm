@@ -56,6 +56,11 @@ package com.jvm.jvmlearn.jmm;
  *  - 可见性
  *  - 有序禁止重排
  *  - 不保证原子性
+ * 2. 内存屏障 (Memory Barrier)
+ *  - 通过插入内存屏障禁止在内存屏障前后的指令执行重排优化、
+ * 3. 使用volatile的地方
+ *  - 单例模式
+ *  -
  */
 
 public class JMMTest {
