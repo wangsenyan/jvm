@@ -78,10 +78,10 @@ public class StringTest {
 
     public static void main(String[] args) throws InterruptedException {
         StringTest st = new StringTest();
-        st.test6();
+        //st.test6();
         //st.test5();
         //st.test8();
-        //st.test9();
+        st.test9();
     }
 
     void test2() throws InterruptedException {
@@ -274,7 +274,13 @@ public class StringTest {
 //        }
         //System.gc();
         //openjdk.java.net/jeps/192
-        for(int i=0;i<100000;i++)
+        for(int i=0;i<100000;i++) {
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             String.valueOf(i).intern();
+        }
     }
 }
