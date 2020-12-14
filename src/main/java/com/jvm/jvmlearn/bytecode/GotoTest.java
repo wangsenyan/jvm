@@ -1,4 +1,4 @@
-package com.jvm.jvmlearn;
+package com.jvm.jvmlearn.bytecode;
 
 /** (Z)V Z布尔类型
  * 一。条件跳转指令，都需要两个字节的操作数,用于计算跳转的位置offset

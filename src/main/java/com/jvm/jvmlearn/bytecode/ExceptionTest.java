@@ -1,4 +1,4 @@
-package com.jvm.jvmlearn;
+package com.jvm.jvmlearn.bytecode;
 
 /**
  * 一。抛出异常指令
