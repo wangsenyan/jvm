@@ -1,5 +1,23 @@
-package com.jvm.jvmlearn;
+package com.jvm.jvmlearn.classloader;
 
+/**
+ * 一。类的生命周期
+ * 加载(loading)- 链接（验证(verify)，准备(prepare)，解析(resolve)）- 初始化(initial) - 使用(using) - 卸载(unmount)
+ * 二。loading加载阶段
+ *  1. 字节码 -> 内存中类模板对象    （反射）
+ *  2. 加载阶段,查找并加载类的二进制数据,生成class的实例
+ *  3. 过程
+ *    - 通过类的全名,获取类的二进制数据流
+ *    - 解析类的二进制数据流为方法区的数据结构(Java类模板)
+ *    - 创建java.lang.Class类的实例,表示该类型,
+ *      作为方法区这个类的各种数据的访问入库
+ *  4. 二进制流的获取方法（只要所读取的字节码符合jvm规范即可）
+ *    - class后缀的文件
+ *    - jar,zip等归档的数据包,提取类文件
+ *    - http协议通过网络进行加载
+ *    - 在运行时生成一段class的二进制信息
+ *  5. 不是ClassFile格式，classFormatError
+ */
 public class ClassLoaderTest {
 
     public static void main(String[] args) {

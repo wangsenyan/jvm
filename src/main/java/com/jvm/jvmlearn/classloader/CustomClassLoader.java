@@ -1,4 +1,4 @@
-package com.jvm.jvmlearn;
+package com.jvm.jvmlearn.classloader;
 
 import java.io.FileNotFoundException;
 /**
