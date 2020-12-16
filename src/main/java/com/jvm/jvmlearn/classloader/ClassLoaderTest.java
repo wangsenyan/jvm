@@ -46,11 +46,28 @@ import java.lang.reflect.Modifier;
  *   - 为静态变量分配内存,并初始化为默认值
  *   - static final 在编译的时候就会分配,准备阶段显示赋值
  *   - 非final修饰的变量,在准备环节进行默认初始化赋值
+ * 3. 解析阶段
+ *
+ * 三。初始化阶段
+ * 0. 为类的静态变量赋予正确的初始值
+ * 1. 到了初始化阶段,才真正开始执行类中定义的Java程序代码
+ * 2. <clinit>()方法
+ *   - Java编译器生成并由JVM调用
+ *   - 由静态成员的赋值语句及static语句块合并产生的
+ *   - 父类的<clinit>()在子类<clinit>()之前调用 由父及子,静态先行
  */
 public class ClassLoaderTest {
     private static long id;
     private static final  int num=0;
     public static final String constStr="CONST";
+    //private String name;
+
+//    private static ClassLoaderTest clt = new ClassLoaderTest("wang");
+//    public ClassLoaderTest(String name) {
+//        this.name = name;
+//        System.out.println(name);
+//    }
+
     //初始化阶段
     public static final String constStr1= new String("CONST");
     public static void main(String[] args) {
@@ -125,4 +142,9 @@ class LinkingTest{
     private static long id;
     private static final  int num=0;
     public static final String constStr="CONST";
+}
+
+class SubInit{
+    private static SubInit s = new SubInit();
+
 }
