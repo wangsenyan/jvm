@@ -55,6 +55,30 @@ import java.lang.reflect.Modifier;
  *   - Java编译器生成并由JVM调用
  *   - 由静态成员的赋值语句及static语句块合并产生的
  *   - 父类的<clinit>()在子类<clinit>()之前调用 由父及子,静态先行
+ * 3. 不会生成<clinit>()的场景 ClinitTest
+ *   - 没静态字段
+ *   - 静态字段没有显示赋值
+ *   - final static 基本数据类型字段 --在准备期就已经确定
+ * 4. <clinit>()的线程安全性
+ *   - 带锁线程安全
+ * 5. 类主动使用和被动使用
+ *   - 主动使用才调用clinit,被动不会
+ *   - 主动使用
+ *     -1 创建一个类的实例,new关键字,或者通过反射,克隆,反序列化
+ *     -2 调用静态方法,即使用字节码的invokestatic
+ *     -3 当使用类、接口的静态字段时(final修饰符特殊考虑),比如,使用getstatic或 putstatic指令
+ *     -4 当使用java.lang.reflect包中的方法反射类的方法时,Class.forName()
+ *     -5 当初始化子类时,如果发现其父类还没有进行初始化,则先触发父类初始化
+ *        - 不适用于接口,初始化一个接口,不会初始化父接口
+ *     -6 如果一个接口定义了default方法,那么直接实现或间接实现该接口的类的初始化,该接口要在其之前被初始化
+ *     -7 当虚拟机启动时,用户要指定一个要执行的主类(main),虚拟机先初始化这个主类
+ *     -8 当初次使用MethodHandle实例时,初始化改MethodHandle指向的方法所在的类(涉及解析REF_getStatic,REF_putStatic)
+ *   - 被动使用
+ *    - 当访问一个静态字段,只有真正声明这个字段的类才会被初始化
+ *      - 当通过子类引用父类的静态变量,不会导致子类初始化
+ *    - 通过数组定义类引用,不会触发
+ *    - 引用常量不会触发类或接口的初始化,常量在链接阶段已经被显示初始化
+ *    - 调用ClassLoader类的loadClass()方法加载一个类,并不会导致类的初始化
  */
 public class ClassLoaderTest {
     private static long id;
@@ -144,7 +168,6 @@ class LinkingTest{
     public static final String constStr="CONST";
 }
 
-class SubInit{
-    private static SubInit s = new SubInit();
-
+class A {
+    private static final A a = new A();
 }
