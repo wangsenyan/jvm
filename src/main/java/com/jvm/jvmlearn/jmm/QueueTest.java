@@ -207,4 +207,8 @@ public class QueueTest {
             }
         },"DD").start();
     }
+    /**
+     * AA(5)->BB(10)->CC(15)
+     */
+
 }
