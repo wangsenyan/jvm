@@ -2,6 +2,7 @@ package com.jvm.jvmlearn.classloader;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.net.URL;
 
 /**
  * 一。类的生命周期
@@ -9,7 +10,7 @@ import java.lang.reflect.Modifier;
  * 二。loading加载阶段
  *  0. 基本数据类型由虚拟机预先定义,引用数据类型则需要进行类的加载
  *  1. 字节码 -> 内存中类模板对象    （反射）
- *  2. 加载阶段,查找并加载类的二进制数据,生成class的实例
+ *  2. 加载阶段,查找并加载类的二进制数据,生成clas xss的实例
  *  3. 过程
  *    - 通过类的全名,获取类的二进制数据流
  *    - 解析类的二进制数据流为方法区的数据结构(Java类模板)
@@ -47,7 +48,7 @@ import java.lang.reflect.Modifier;
  *   - static final 在编译的时候就会分配,准备阶段显示赋值
  *   - 非final修饰的变量,在准备环节进行默认初始化赋值
  * 3. 解析阶段
- *
+ *   - 字符串引用转为地址引用
  * 三。初始化阶段
  * 0. 为类的静态变量赋予正确的初始值
  * 1. 到了初始化阶段,才真正开始执行类中定义的Java程序代码
@@ -79,6 +80,62 @@ import java.lang.reflect.Modifier;
  *    - 通过数组定义类引用,不会触发
  *    - 引用常量不会触发类或接口的初始化,常量在链接阶段已经被显示初始化
  *    - 调用ClassLoader类的loadClass()方法加载一个类,并不会导致类的初始化
+ * 四。类的使用
+ * 五。类的卸载
+ *  1. 类、类的加载器、类的实例之间的引用关系
+ *     loader引用变量 --> 类的加载器 <---> 类的Class实例
+ *                                 --->类的二进制数据结构
+ *                                 --->类的实例(堆) <----类的实例引用变量
+ *  2. 类的生命周期
+ *     - Class对象的生命周期
+ *     - 类回收满足三个条件（方法区的垃圾回收）
+ *       - 所有实例被回收(java堆中不存在该类及其任何派生类的实例)
+ *       - 加载该类的类加载器已经被回收，OSGi,JSP的重载等
+ *       - 对应的java.lang.Class对象没有在任何地方被引用,无法通过反射访问该类的方法
+ *
+ *
+ * 六。类的加载器
+ *  1. 类的加载分类
+ *   - 显示加载
+ *     - Class.forName(name)
+ *     - this.getClass().getClassLoader().loadClass()
+ *   - 隐式加载:虚拟机自动加载到内存中
+ *     - class文件中引用了另一个类的对象
+ *  2.了解的必要性
+ *   - java.lang.ClassNotFoundException 或 java.lang.NoClassDefFoundError
+ *   - 支持类的动态加载或对编译后的字节码进行加密解密操作
+ *   - 自动以加载器重新定义类的加载规则,实现自己的逻辑
+ *  3. 命名空间
+ *   - 类由加载它的类加载器和这个类本身一同确认在java虚拟机中的唯一性
+ *   - 每个类加载器都有一个独立的类名称空间,命名空间由该加载器及所有的父加载器加载的类组成
+ *   - 同一命名空间中不会出现类的完整名字相同的两个类
+ *   - 在不同的命名空间中,有可能出现类的完整名字相同的两个类
+ *  4. 类加载器的基本特征
+ *   - 双亲委派模型
+ *   - 可见性:子类加载器可以访问父类加载器,反过来不允许
+ *   - 单一性:父加载过的类型,不会被子加载器再次加载
+ *  5. 类的加载器分类
+ *   - 引导类加载器
+ *     - 启动类加载器（java，javax,sun开头的）
+ *   - 自定义类加载器(java实现)aa
+ *     - 扩展类加载器(sun.misc.Launcher$ExtClassLoader)
+ *      - 继承ClassLoader
+ *      - 父类加载器为启动类加载器
+ *      - 从java.ext.dirs,jre/lib/ext子类
+ *     - 应用程序类加载器(sun.misc.Launcher$AppClassLoader)
+ *      - AppClassLoader
+ *      - classpath java.class.path
+ *     - 用户自定义加载器
+ *  6. 测试不同的类加载器
+ *   - 获取ClassLoader的途径
+ *     - 获取当前类的ClassLoader
+ *       clazz.getClassLoader
+ *     - 获取当前线程上下文的ClassLoader
+ *       Thread.currentThread().getContextClassLoader()
+ *     - 获取系统的ClassLoader
+ *       ClassLoader.getSystemClassLoader()
+ *   - 数组的加载器和数组元素类型的加载器相同
+ *   - 基本数据类型不需要加载
  */
 public class ClassLoaderTest {
     private static long id;
@@ -127,10 +184,15 @@ public class ClassLoaderTest {
         //}
         System.out.println("**********扩展类加载器**************");
         //jdk14失效
-        String extDirs = System.getProperty("java.ext.dirs");
-        for (String path : extDirs.split(";")) {
-            System.out.println(path);
-        }
+//        String extDirs = System.getProperty("java.ext.dirs");
+//        for (String path : extDirs.split(";")) {
+//            System.out.println(path);
+//        }
+        String[] arrStr = new String[6];//数组中元素类型使用的加载器一样
+        System.out.println(arrStr.getClass().getClassLoader());//null表示引导类加载器
+
+        ClassLoader1[] arr1 = new ClassLoader1[6];
+        System.out.println(arr1.getClass().getClassLoader());
     }
     public static void Loading(){
         try {
@@ -170,4 +232,21 @@ class LinkingTest{
 
 class A {
     private static final A a = new A();
+}
+
+class UserClassLoader extends ClassLoader{
+
+}
+class ClassLoader1 {
+    public static void main(String[] args) throws ClassNotFoundException {
+
+        System.out.println("**************启动类加载器**************");
+//       System.out.println(classLoader);
+//        URL[] urls = sun.misc.Launcher.getBootstrapClassPath().getURLs();
+//        for(URL element:urls)
+//            System.out.println(element.toExternalForm());
+        Class clazz3 = ClassLoader.getSystemClassLoader().loadClass("com.jvm.jvmlearn.classloader.ClassLoader1");
+        System.out.println(clazz3.getClassLoader());
+        System.out.println(clazz3.getClassLoader().getParent());
+    }
 }
