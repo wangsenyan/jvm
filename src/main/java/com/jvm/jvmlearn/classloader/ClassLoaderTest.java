@@ -1,5 +1,6 @@
 package com.jvm.jvmlearn.classloader;
 
+
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.net.URL;
@@ -136,6 +137,53 @@ import java.net.URL;
  *       ClassLoader.getSystemClassLoader()
  *   - 数组的加载器和数组元素类型的加载器相同
  *   - 基本数据类型不需要加载
+ * 7. findClass
+ *   - findClass()加载类的字节码后转换成流
+ *    - protected Class<?> findClass(final String name)
+ *   - defineClass()方法生成类的Class对象
+ *    - private Class<?> defineClass(String name, Resource res)
+ * 8. ClassLoader子类
+ *   -  SecureClassLoader 对代码源的位置及其证书的验证
+ *     - URLClassLoader 实现findClass和findResource等,新增URLClassPath类协助取得class字节码流等功能
+ *        - FilteredClassLoader
+ *     - BuiltinClassLoader
+ *        - AppClassLoader
+ * 9. 实现ClassLoader
+ *   - 重写loadClass 可不遵循双星委派
+ *   - 重写findClass 遵循双星委派
+ *   - pre
+ *   - 上层不能调用下层的类加载器
+ * 10. Class.forName 与 ClassLoader.loadClass()
+ *   - Class.forName 主动调用类,clinit
+ *   - loadClass 不会执行类初始化
+ * 11. 违背双亲委派机制的情况
+ *   - 1.2之前重写loadClass方法的类
+ *   - ContextClassLoader
+ *   - 代码热替换,模块热部署 OSGI
+ *
+ * 12. 沙箱安全机制
+ *  - 保护程序安全
+ *  - 保护java原生的JDK代码
+ *  - java安全模型的核心就是Java沙箱(sandbox)
+ *    - 限定在虚拟机(JVM)特定的运行范围中,并严格限制代码对本地系统资源访问
+ *    - CPU，内存，文件系统，网络
+ * 13. 自定义加载器
+ *  - 为什么自定义类加载器
+ *    - 隔离加载类 例如Tomcat ---类仲裁-->类冲突
+ *    - 修改类的加载方式  按需加载
+ *    - 扩展加载源
+ *    - 防止源码泄漏
+ *  - 坏处
+ *    - 类型转换只能是同一类加载器加载的两个类才行
+ * 14. jdk9新特性
+ *  - 扩展机制被移除,扩展类加载器被重命名为平台类加载器PlatformClassLoader
+ *    ClassLoader.getPlatformClassLoader()
+ *    - rt.jar 和 tools.jar 被拆分为数十个JMOD文件
+ *  - 平台类加载器和应用程序加载器不再继承于java.net.URLClassLoader
+ *     继承于jdk.internal.loader.BuiltinClassLoader - SecureClassLoader
+ *  - 引导类加载器BootClassLoader,依然返回null
+ *  - ClassLoader.getName()
+ *  - 先判定父类属于的模块,用模块的加载器加载
  */
 public class ClassLoaderTest {
     private static long id;
@@ -250,3 +298,47 @@ class ClassLoader1 {
         System.out.println(clazz3.getClassLoader().getParent());
     }
 }
+/**
+    protected Class<?> loadClass(String name, boolean resolve) //resolve 是否解析
+            throws ClassNotFoundException
+    {
+        synchronized (getClassLoadingLock(name)) { //同步操作保证只加载一次
+            // First, check if the class has already been loaded
+            Class<?> c = findLoadedClass(name);//缓存中判断是否已加载同名的类
+            if (c == null) {
+                long t0 = System.nanoTime();
+                try {
+                    //获取当前类加载器的父类加载器
+                    if (parent != null) {
+                        //如果存在父类加载器,调用父类加载器加载
+                        c = parent.loadClass(name, false);
+                    } else {
+                        //parent为null,父类加载器为引导类加载器
+                        c = findBootstrapClassOrNull(name);
+                    }
+                } catch (ClassNotFoundException e) {
+                    // ClassNotFoundException thrown if class not found
+                    // from the non-null parent class loader
+                }
+
+                if (c == null) { //当前类的加载器的父类未加载此类 or 当前类的加载器未加载此类
+                    // If still not found, then invoke findClass in order
+                    // to find the class.
+                    //调用当前ClassLoader的findClass()方法
+                    long t1 = System.nanoTime();
+                    //URLClassLoader
+                    c = findClass(name);
+
+                    // this is the defining class loader; record the stats
+                    PerfCounter.getParentDelegationTime().addTime(t1 - t0);
+                    PerfCounter.getFindClassTime().addElapsedTimeFrom(t1);
+                    PerfCounter.getFindClasses().increment();
+                }
+            }
+            if (resolve) {
+                resolveClass(c);
+            }
+            return c;
+        }
+    }
+ */
