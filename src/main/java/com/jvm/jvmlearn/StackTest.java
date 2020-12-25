@@ -9,7 +9,7 @@ package com.jvm.jvmlearn;
  * 1. StackOverflowError
  * 2. OutOfMemoryError
  * 异常逐级向上抛出,如果没有被捕获,虚拟机异常退出(捕获相当于正常返回)
- * 设置栈大小(1M)
+ * 设置栈大小(1M) -XX:ThreadStackSize
  * -Xss1m
  * -Xss1024k
  * -Xss1048576

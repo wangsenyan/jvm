@@ -5,6 +5,27 @@ import java.util.HashMap;
 import java.util.Random;
 
 /**
+ * 零。JVM的参数类型
+ *  1. 标配参数
+ *  2. X参数
+ *    - -XX:InitialHeapSize -Xms
+ *    - -XX:MaxHeapSize -Xmx
+ *
+ *    - -Xint 解释执行
+ *    - -Xcomp 第一次使用就编译成本地代码
+ *    - -Xmixed 混合模式
+ *  3. XX参数 jinfo -flag PrintGCDetails <pid>
+ *           jinfo -flags <pid> 模糊查询
+ *           直接执行java -XX:+PrintFlagsInitial --version
+ *              := 表示被修改的(jvm或人为修改过)
+ *    - 布尔类型
+ *    - KV类型
+ *     - -XX:MaxTenuringThreshold=15
+ *  4. -XX:PrintFlagsInitial
+ *     -XX:PrintFlagsFinal
+ *     java -XX:+PrintCommandLineFlags -version 获取GC信息
+ *
+ *  5. 代码层面的参数打印
  * 设置堆空间 -Xms10m -Xms10m 初始和最大
  * -XX +PrintGCDetails 打印GC消息
  * jvisualvm.exe
