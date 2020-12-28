@@ -1,5 +1,6 @@
 package com.jvm.jvmlearn.jmm;
 
+import java.util.HashMap;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -18,6 +19,21 @@ import java.util.concurrent.locks.ReentrantLock;
  *  - ReentrantLock
  *  - ReentrantReadWriteLock
  *  - Semaphore
+ * 3. AQS组成
+ *  - volatile int state 表示同步状态
+ *  - FIFO队列 资源获取的排队工作
+ *  - Node 每条抢占资源的线程
+ *   - volatile int  waitState 每个node的状态
+ *     - WAITING 1
+ *     - CANCELLED 0x80000000
+ *     - COND 2
+ *  - CAS 对State值的修改
+ * 4. ReentrantLock
+ *  - 公平锁
+ *    - FairSync
+ *    - hasQueuedPredecessors 判断是否有有效节点
+ *  - 非公平锁
+ *    - NonfairSync
  */
 public class AQSTest {
     public static void main(String[] args) {
