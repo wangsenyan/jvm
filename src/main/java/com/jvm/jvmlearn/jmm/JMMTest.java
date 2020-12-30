@@ -60,8 +60,14 @@ package com.jvm.jvmlearn.jmm;
  *  - 通过插入内存屏障禁止在内存屏障前后的指令执行重排优化、
  * 3. 使用volatile的地方
  *  - 单例模式
- *  -
+ *
+ * 六。sleep,yield,wait,join的区别
+ *  1. sleep(long mills) 让出CPU资源,但不会释放锁资源
+ *  2. wait() 让出CPU资源和锁资源
+ *  3. yield() 让出CPU调度,只能让同优先级的线程有执行的机会
+ *  4. join() 特殊的wait
  */
 
 public class JMMTest {
+    ThreadLocal threadLocal = new ThreadLocal();
 }
