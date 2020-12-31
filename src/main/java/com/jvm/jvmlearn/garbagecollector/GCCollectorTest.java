@@ -14,6 +14,10 @@ import java.util.Random;
  *   - module
  * 3. Edit Configure
  * 垃圾回收器 -XX:+PrintCommandLineFlags
+ *          jinfo -flag PrintGCDetails <pid>
+ *  *           jinfo -flags <pid> 模糊查询
+ *  *           直接执行java -XX:+PrintFlagsInitial --version
+ *  *              := 表示被修改的(jvm或人为修改过)
  * 一。GC分类与性能指标
  * 1. Java不同版本的新特性
  *  1) 语法层面:Lambda表达式、switch、自动装填、自动拆箱、enum、<>...
@@ -138,7 +142,9 @@ import java.util.Random;
  *  - gcviewer
  * 十。垃圾回收器的新发展
  *
- *
+ * 十一。复习收获
+ * 1.复制算法适用于存活对象比例少,使得survivor区更小
+ * 2.停等时间适合移动对象,来处理对象的引用关系
  *
  */
 
