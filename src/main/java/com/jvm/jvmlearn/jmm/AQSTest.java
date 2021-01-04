@@ -1,6 +1,7 @@
 package com.jvm.jvmlearn.jmm;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -38,6 +39,5 @@ import java.util.concurrent.locks.ReentrantLock;
 public class AQSTest {
     public static void main(String[] args) {
         ReentrantLock reentrantLock = new ReentrantLock();
-
     }
 }
