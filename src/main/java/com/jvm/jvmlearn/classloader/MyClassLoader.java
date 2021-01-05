@@ -27,7 +27,6 @@ public class MyClassLoader extends ClassLoader{
                 e.printStackTrace();
             }
         }
-
         return super.findClass(className);
     }
     public String getClassFile(String className){
