@@ -15,7 +15,7 @@ public class LRUCahceDemo<K,V> extends LinkedHashMap<K,V> {
         super(capacity,0.75F,true);//true for access-order
         this.capacity = capacity;
     }
-
+    @Override
     protected boolean removeEldestEntry(Map.Entry<K,V> eldest) {
         return super.size()>capacity;
     }
@@ -231,7 +231,6 @@ class MyLRU{
             return null;
         }
     }
-
     private int size;
     Map<Integer,Node<Integer,Integer>>map;
     DLinkList<Integer,Integer> dLinkList;
