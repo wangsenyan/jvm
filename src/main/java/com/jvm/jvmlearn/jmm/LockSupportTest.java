@@ -1,5 +1,7 @@
 package com.jvm.jvmlearn.jmm;
 
+import org.springframework.context.annotation.Bean;
+
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.LockSupport;

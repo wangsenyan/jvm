@@ -1,5 +1,13 @@
 package com.jvm.jvmlearn.jmm;
 
+/**
+ * 单例模式8种写法
+ * 1. 饿汉式 2种
+ * 2. 懒汉式 2种
+ * 3. 双重检查
+ * 4. 静态内部类
+ * 5. 枚举
+ */
 public class SingletonDemo {
     private volatile static SingletonDemo instance;
 

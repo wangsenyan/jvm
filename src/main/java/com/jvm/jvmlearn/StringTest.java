@@ -78,10 +78,11 @@ public class StringTest {
 
     public static void main(String[] args) throws InterruptedException {
         StringTest st = new StringTest();
+        st.test4();
         //st.test6();
         //st.test5();
         //st.test8();
-        st.test9();
+        //st.test9();
     }
 
     void test2() throws InterruptedException {
