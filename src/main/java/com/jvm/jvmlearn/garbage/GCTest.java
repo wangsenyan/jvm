@@ -1,6 +1,6 @@
 package com.jvm.jvmlearn.garbage;
 
-/**
+/**   -verbose:gc
  * 一。经典三问
  * 1. 哪些内存需要回收
  * 2. 什么时候回收
@@ -174,6 +174,20 @@ package com.jvm.jvmlearn.garbage;
  *     - 无需手动编码,其内部配合引用队列使用
  *     - 在GC时,终结期引用入队。由Finalizer线程通过终结器引用找到
  *       被引用对象并调用它的finalize()方法,第二次GC时才能回收被引用对象
+ *
+ *  jdk14:
+ *   - -XX:+UseParallelGC
+ *   - -XX:+UseSerialGC
+ *   - -XX:+UseG1GC  //def new generation 新生代  tenured generation 老年代
+ * jdk8:
+ *   - -XX:+UseParallelGC
+ *   - -XX:+UseSerialGC
+ *   - -XX:+ParNewGC
+ *   - -XX:+UseConcMarkSweepGC  //par new generation  concurrent mark-sweep generation
+ *   - -XX:+UseG1GC  //def new generation 新生代  tenured generation 老年代
+ *concurrent mark-sweep generation
+ *  新生代都是复制算法
+ *
  */
 public class GCTest {
     private byte[] bigSize = new byte[5 * 1024 * 1024];
@@ -188,7 +202,7 @@ public class GCTest {
         obj2.reference = obj1;
 
         try {
-            Thread.sleep(100000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

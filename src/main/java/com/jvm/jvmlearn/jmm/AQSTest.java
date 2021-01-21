@@ -2,6 +2,10 @@ package com.jvm.jvmlearn.jmm;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingDeque;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -38,6 +42,11 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class AQSTest {
     public static void main(String[] args) {
-        ReentrantLock reentrantLock = new ReentrantLock();
+        BlockingQueue blockingQueue = new LinkedBlockingQueue();
+        for (int i = 0; i < 5; i++) {
+            new Thread(()->{
+
+            },String.valueOf(i)).start();
+        }
     }
 }

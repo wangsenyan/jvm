@@ -1,4 +1,4 @@
-package com.jvm.jvmlearn;
+package com.jvm.jvmlearn.jmm;
 
 //<clinit>() 静态类变量初始化及静态代码块代码合并
 //<clinit>()方法在多线程下呗同步加锁,单例模式

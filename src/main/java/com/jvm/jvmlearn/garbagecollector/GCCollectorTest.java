@@ -51,6 +51,7 @@ import java.util.Random;
  * 5. -XX:GCTimeRatio 垃圾收集时间占总时间的比例(吞吐量)
  *    范围(0,100) 默认99,即垃圾回收时间不超过1%
  * 6. -XX:+UseAdaptiveSizePolicy 设置Parallel Scavenge收集器具有自适应调节策略
+ * 4,5,6是Parallel Scavenge 与 ParNew 的主要区别,可控的吞吐量
  * 六。CMS回收器:低延迟
  *  1. 第一款并行(执行线程和回收线程同时运行)
  *  2. 无法与Parallel Scavenge 配合使用,新生代只能与ParNew 与 Serial 一起使用
