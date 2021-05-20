@@ -78,9 +78,11 @@ public class StringTest {
 
     public static void main(String[] args) throws InterruptedException {
         StringTest st = new StringTest();
-        st.test4();
+        //st.test4();
         //st.test6();
         //st.test5();
+        st.test6();
+        //st.test7();
         //st.test8();
         //st.test9();
     }
@@ -163,7 +165,7 @@ public class StringTest {
          *  9 astore_1
          * 10 return
          */
-        //String str = new String("ab");
+        String str = new String("ab");
         /**
          *  0 new #7 <java/lang/String>                                            1个
          *  3 dup
@@ -177,7 +179,8 @@ public class StringTest {
          * 23 astore_1
          * 24 return
          */
-        String str = new String("a") + new String("b");
+        String str1 = new String("a") + new String("b");
+        System.out.println(str == str1);
     }
 
     /**
@@ -193,13 +196,13 @@ public class StringTest {
          *  9 astore_1
          */
         String s = new String("1");
-        //s.intern();
+        s.intern();
         /**
          * 10 ldc #36 <1>
          * 12 astore_2
          */
         String s2 = "1";
-        //System.out.println(s == s2);
+        System.out.println(s == s2);
         /**
          * new #7 <java/lang/String>
          * 16 dup
@@ -216,18 +219,19 @@ public class StringTest {
          *    引用复制一份？？？
          *    疑问?常量池中有没有23????
          */
+        //new String("2") + new String("3");没有在常量池中生成23
         String s3 = new String("2") + new String("3");
         //Thread.sleep(100000);
-        //s3.intern();
+        s3.intern();
         /**
          * 37 ldc #117 <23>
          * 39 astore 4
          */
-        //String s4 ="23";
+        String s4 ="23";
         /**
          * 41 return
          */
-        //System.out.println(s3==s4);
+        System.out.println(s3==s4);
         //Thread.sleep(100000);
     }
 

@@ -5,6 +5,8 @@ import com.google.auto.service.AutoService;
 
 import javax.tools.Diagnostic;
 import javax.tools.Diagnostic.Kind;
+
+import com.jvm.annotation.check.zero.UseCase;
 import lombok.SneakyThrows;
 
 import javax.annotation.processing.*;

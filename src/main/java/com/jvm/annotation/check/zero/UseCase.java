@@ -15,10 +15,15 @@ import java.lang.annotation.Target;
  * - Class
  * - enum
  * - Annotation
+ *   AbstractProcessor
+ * 找到注解 getAnnotation(Override.class)
+ * @SupportedAnnotationTypes("java.lang.Override")
+ * @SupportedAnnotationTypes("java.lang.Deprecated") //找到这个
+ *   - 找到LoadProc.class 文件
  */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface UseCase {
-    public int id();
-    public String description() default "no description";
+    int id();
+    String description() default "no description";
 }

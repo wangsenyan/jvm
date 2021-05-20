@@ -1,7 +1,6 @@
 package com.jvm.annotation.check.one;
 
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 public class Person {
